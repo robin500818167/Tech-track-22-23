@@ -1,6 +1,61 @@
-body {
-  background-image: url("/images/banner.svg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  font-family: Raleway,sans-serif;
+body, html {
+  font-family: 'Raleway', sans-serif;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+svg {
+  position: fixed;
+  z-index: 1;
+  background-color: #7DC9C3;
+  fill: #71B5B0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+path { 
+  stroke-width: 2px; 
+}
+path:nth-child(odd) { 
+  stroke-opacity: 0.1 
+}
+.fade { 
+  animation: fade 5s infinite;
+}
+@keyframes fade {
+   0%   { opacity:1; } 
+   50%  { opacity:0.3; } 
+   100% { opacity:1; }
+  }
+section {
+  z-index: 10;
+  position: relative; 
+}
+button{
+  font-weight: bold;
+  color: #71B5B0;
+  background-color: #7DC9C3;
+  border: 5px solid #71B5B0;
+  padding: 25px 30px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: 0.5s;
+  letter-spacing: 4px;
+}
+button:nth-child(2){
+  color: #87C9A1;
+  background-color: #67B892;
+  border: 5px solid #87C9A1;
+}
+button:nth-child(3){
+  color: #7E7057;
+  background-color: #F8EEBB;
+  border: 5px solid #7E7057;
+}
+nav, h1 {
+  display: flex;
+  justify-content: space-around;
+}
+h1 {
+  font-size: 3em;
 }
