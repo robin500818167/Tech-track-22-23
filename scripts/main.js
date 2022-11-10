@@ -4,10 +4,10 @@ import '../styles/style.css'
 import * as d3 from 'd3';
 import CONFIG from './config.js';
 import request from './request.js';
-import make from './make.js';
+import changeColor from './changeColor.js';
 
 const data = await request(CONFIG.url);
-make();
+changeColor();
 let amount = 0;
 
 console.log(data);
