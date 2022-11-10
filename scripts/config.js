@@ -1,5 +1,5 @@
 const CONFIG = {
-	url: 'scripts/swagger.json'
+	url: 'http://acnhapi.com/v1/fish/'
 }
 
 export default CONFIG;
