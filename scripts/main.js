@@ -7,7 +7,7 @@ import request from './request.js';
 import make from './make.js';
 
 const data = await request(CONFIG.url);
-
+make();
 let amount = 0;
 
 console.log(data);
