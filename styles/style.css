@@ -31,7 +31,7 @@ path:nth-child(odd) {
    50%  { opacity:0.3; } 
    100% { opacity:1; }
   }
-section {
+section, main {
   z-index: 10;
   position: relative; 
 }
@@ -56,7 +56,7 @@ button:nth-child(3){
   background-color: #F8EEBB;
   border: 5px solid #7E7057;
 }
-nav, h1 {
+nav, h1, main {
   display: flex;
   justify-content: space-around;
 }

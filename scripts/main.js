@@ -5,38 +5,80 @@ import * as d3 from 'd3';
 import CONFIG from './config.js';
 import request from './request.js';
 import changeColor from './changeColor.js';
+import data from './fish.json';
 
-const data = await request(CONFIG.url);
+
+
+
+//const data = await request(CONFIG.url);
 changeColor();
-let amount = 0;
 
-console.log(data);
+let newdata = Object.values(data)
+//console.log(newdata)
+//console.log(newdata[0].availability["time-array"]);
+//console.log(data.bitterling.availability["time-array"]);
 
-const chartWidth = 700
-const chartHeight = 800
+//console.log(d3.rollups(newdata, v => v.length, d => d.availability["time-array"][0] ))
+//console.log(d3.group(newdata, d => d.availability["time-array"]))
 
-// const yScale = d3.scaleLinear()
-// 	.domain([0, d3.max(data, d => d.Aantal)])
-// 	.range([0, chartWidth]);
+var hourCount = [];
+newdata.forEach(d => {
+    d.availability["time-array"].forEach(h => {
+        if  (hourCount.hasOwnProperty(h))  {
+            hourCount[h]++
+        } else {
+            hourCount[h] = 1;
+        }
+     } )
+})
+console.log('hourCount', hourCount)
 
-const xScale = d3.scaleBand()
-	.domain(d3.map(data, d => d.availabilty))
-	.range([0, chartHeight])
-  .paddingInner(0.05);
 
-d3.select('#bars')
-  .selectAll('rect')
-  .data(data)
-  .join('rect')
-  .attr('height', 25) //yScale.bandwith())
-  .attr('width', d => xScale(d.availabilty))
-//   .attr('y', d => yScale(d.availabilty))
-  .classed('animate__animated animate__headShake animate__infinite', () => Math.random() > 0.8)
-  .classed('animate__slower', () => Math.random() > 0.5)
 
-d3.select('#labels')
-  .selectAll('text')
-  .data(data)
-  .join('text')
-//   .attr('y', d => yScale(d.availabilty) + 15)
-  .text(d => d.availabilty);
+var dataCount = [];
+newdata.forEach(e => dataCount[e.availability.hourCount] = dataCount[e.availability.hourCount] ? dataCount[e.availability.hourCount] + 1 : 1);
+dataCount = Object.keys(dataCount).map(e => {return {key:e, count:dataCount[e]}});
+
+
+// set the dimensions and margins of the graph
+const margin = {top: 30, right: 30, bottom: 70, left: 60},
+    width = 1000 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+const svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+console.log(hourCount.length)
+  // X axis
+  const x = d3.scaleBand()
+  .range([ 0, width ])
+  .domain([ 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23])
+  .padding(0.2);
+svg.append("g")
+  .attr("transform", `translate(0, ${height})`)
+  .call(d3.axisBottom(x))
+  .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end");
+
+  // Add Y axis
+  const y = d3.scaleLinear()
+    .domain([0, d3.max(hourCount)])
+    .range([ height, 0]);
+  svg.append("g")
+    .call(d3.axisLeft(y));
+
+  // Bars
+  svg.selectAll("mybar")
+  .data(hourCount)
+  .join("rect")
+    .attr("x", (d, i) => x(i))
+    .attr("y", (d, i) => y(hourCount[i]))
+    .attr("width", x.bandwidth())
+    .attr("height", (d, i) =>  height - y(hourCount[i]))
+    .attr("fill", "#69b3a2")
+
