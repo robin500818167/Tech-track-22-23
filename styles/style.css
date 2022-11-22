@@ -52,13 +52,14 @@ button:nth-child(2){
   border: 5px solid #87C9A1;
 }
 button:nth-child(3){
-  color: #7E7057;
-  background-color: #F8EEBB;
-  border: 5px solid #7E7057;
+  color: #76C4BD;
+  background-color: #027C75;
+  border: 5px solid #76C4BD;
 }
 nav, h1, main {
   display: flex;
   justify-content: space-around;
+  margin: 35px;
 }
 h1 {
   font-size: 3em;

@@ -5,13 +5,12 @@ import * as d3 from 'd3';
 import CONFIG from './config.js';
 import request from './request.js';
 import changeColor from './changeColor.js';
-import data from './fish.json';
-
-
-
-
-//const data = await request(CONFIG.url);
 changeColor();
+
+
+
+const data = await request(CONFIG.url);
+
 
 let newdata = Object.values(data)
 //console.log(newdata)
@@ -42,7 +41,7 @@ dataCount = Object.keys(dataCount).map(e => {return {key:e, count:dataCount[e]}}
 
 // set the dimensions and margins of the graph
 const margin = {top: 30, right: 30, bottom: 70, left: 60},
-    width = 1000 - margin.left - margin.right,
+    width = 1500 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
