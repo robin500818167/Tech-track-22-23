@@ -1,7 +1,6 @@
-import changeColor from './changeColor.js';
-changeColor();
+
 const CONFIG = {
-	url: `http://acnhapi.com/v1/${sort}`
-}
+  url: `http://acnhapi.com/v1/`,
+};
 
 export default CONFIG;
