@@ -4,11 +4,27 @@ import '../styles/style.css'
 import * as d3 from 'd3';
 import changeColor from './changeColor.js';
 
-async function main() {
+function updateChart(month) {
+  month = Number(month);
+  const data = filterData(month);
+  drawChart(data);
+}
+async function main(month) {
   const data = await changeColor();
-
-
+ 
   let newdata = Object.values(data)
+
+  var monthCount = [];
+  newdata.forEach(d => {
+      d.availability["month-array-northern"].forEach(h => {
+          if  (monthCount.hasOwnProperty(h))  {
+              monthCount[h]++
+          } else {
+              monthCount[h] = 1;
+          }
+      } )
+  })
+  monthCount.filter((d) => d.monthCount === month);
 
   var hourCount = [];
   newdata.forEach(d => {
@@ -70,6 +86,11 @@ async function main() {
       .attr("height", (d, i) =>  height - y(hourCount[i]))
       .attr("fill", "#69b3a2")
 
+      window.addEventListener('DOMContentLoaded', (e) => {
+        d3.selectAll("button").on("click", (e) => updateChart(e.target.value));
+        updateChart(1);
+
+})
 }
 
 main();

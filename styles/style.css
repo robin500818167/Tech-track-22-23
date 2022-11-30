@@ -28,7 +28,7 @@ path:nth-child(odd) {
 }
 @keyframes fade {
    0%   { opacity:1; } 
-   50%  { opacity:0.3; } 
+   50%  { opacity:0.1; } 
    100% { opacity:1; }
   }
 section, main {
@@ -46,12 +46,12 @@ button{
   transition: 0.5s;
   letter-spacing: 4px;
 }
-button:nth-child(2){
+nav button:nth-child(2){
   color: #87C9A1;
   background-color: #67B892;
   border: 5px solid #87C9A1;
 }
-button:nth-child(3){
+nav button:nth-child(3){
   color: #76C4BD;
   background-color: #027C75;
   border: 5px solid #76C4BD;
@@ -62,5 +62,9 @@ nav, h1, main {
   margin: 35px;
 }
 h1 {
+  margin-top: 0;
   font-size: 3em;
+}
+main{
+  flex-direction: column;
 }
