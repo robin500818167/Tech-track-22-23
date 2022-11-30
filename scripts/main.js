@@ -4,80 +4,104 @@ import '../styles/style.css'
 import * as d3 from 'd3';
 import changeColor from './changeColor.js';
 
-function updateChart(month) {
+const margin = {top: 30, right: 30, bottom: 70, left: 60},
+width = 1500 - margin.left - margin.right,
+height = 400 - margin.top - margin.bottom;
+
+async function updateChart(month) {
   month = Number(month);
-  const data = filterData(month);
+  const data = await filterData(month);
   drawChart(data);
 }
-async function main(month) {
-  const data = await changeColor();
- 
-  let newdata = Object.values(data)
 
-  var monthCount = [];
-  newdata.forEach(d => {
-      d.availability["month-array-northern"].forEach(h => {
-          if  (monthCount.hasOwnProperty(h))  {
-              monthCount[h]++
-          } else {
-              monthCount[h] = 1;
-          }
-      } )
+async function filterData(month) {
+    const data = await changeColor();
+  
+    let newdata = Object.values(data)
+    
+
+  newdata = newdata.filter(d=> {
+  return  d.availability["month-array-northern"].includes(month)
+    // console.log(d.availability["month-array-northern"])
   })
-  monthCount.filter((d) => d.monthCount === month);
+  // console.log("newData.filter", newdata)
+  //   var monthCount = [];
+  //   newdata.forEach(d => {
+  //       d.availability["month-array-northern"].forEach(h => {
+  //           if  (monthCount.hasOwnProperty(h))  {
+  //               monthCount[h]++
+  //           } else {
+  //               monthCount[h] = 1;
+  //           }
+  //       } )
+  //   })
 
-  var hourCount = [];
-  newdata.forEach(d => {
-      d.availability["time-array"].forEach(h => {
-          if  (hourCount.hasOwnProperty(h))  {
-              hourCount[h]++
-          } else {
-              hourCount[h] = 1;
-          }
-      } )
-  })
-  console.log('hourCount', hourCount)
+    // console.log("monthCount", monthCount)
 
+    // monthCount.filter((d) => d.monthCount === month);
 
+    var hourCount = [];
+    newdata.forEach(d => {
+        d.availability["time-array"].forEach(h => {
+            if  (hourCount.hasOwnProperty(h))  {
+                hourCount[h]++
+            } else {
+                hourCount[h] = 1;
+            }
+        } )
+    })
+    //console.log('hourCount', hourCount)
 
-  var dataCount = [];
-  newdata.forEach(e => dataCount[e.availability.hourCount] = dataCount[e.availability.hourCount] ? dataCount[e.availability.hourCount] + 1 : 1);
-  dataCount = Object.keys(dataCount).map(e => {return {key:e, count:dataCount[e]}});
+    return hourCount;
 
+    // var dataCount = [];
+    // newdata.forEach(e => dataCount[e.availability.hourCount] = dataCount[e.availability.hourCount] ? dataCount[e.availability.hourCount] + 1 : 1);
+    // dataCount = Object.keys(dataCount).map(e => {return {key:e, count:dataCount[e]}});
+}
 
-  // set the dimensions and margins of the graph
-  const margin = {top: 30, right: 30, bottom: 70, left: 60},
-      width = 1500 - margin.left - margin.right,
-      height = 400 - margin.top - margin.bottom;
+const x = d3.scaleBand()
+.range([ 0, width ])
+.domain([ 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23])
+.padding(0.2);
 
-  // append the svg object to the body of the page
-  const svg = d3.select("#my_dataviz")
+function initChart() {
+
+    // append the svg object to the body of the page
+    const svg = d3.select("#my_dataviz")
     .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
+      .attr("id", "mybars")
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
     // X axis
-    const x = d3.scaleBand()
-    .range([ 0, width ])
-    .domain([ 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23])
-    .padding(0.2);
-  svg.append("g")
+    svg.append("g")
     .attr("transform", `translate(0, ${height})`)
     .call(d3.axisBottom(x))
     .selectAll("text")
       .attr("transform", "translate(-10,0)rotate(-45)")
       .style("text-anchor", "end");
 
-    // Add Y axis
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(hourCount)])
-      .range([ height, 0]);
     svg.append("g")
-      .call(d3.axisLeft(y));
+      .attr("id", "yaxis")
+      
+}
+
+function drawChart(hourCount) {
+  
+  // set the dimensions and margins of the graph
+     // Add Y axis
+     const y = d3.scaleLinear()
+     .domain([0, d3.max(hourCount)])
+     .range([ height, 0]);
+
+     d3.select("#yaxis")
+     .call(d3.axisLeft(y));
 
     // Bars
-    svg.selectAll("mybar")
+    d3.select("#mybars")
+    .selectAll("rect")
     .data(hourCount)
     .join("rect")
       .attr("x", (d, i) => x(i))
@@ -86,11 +110,13 @@ async function main(month) {
       .attr("height", (d, i) =>  height - y(hourCount[i]))
       .attr("fill", "#69b3a2")
 
-      window.addEventListener('DOMContentLoaded', (e) => {
-        d3.selectAll("button").on("click", (e) => updateChart(e.target.value));
-        updateChart(1);
+}     
 
+window.addEventListener('DOMContentLoaded', (e) => {
+  d3.selectAll("#filter button").on("click", (e) => {
+    updateChart(e.target.value)
+  });
+  initChart();
+  updateChart(1);
 })
-}
 
-main();
