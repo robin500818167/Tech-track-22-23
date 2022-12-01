@@ -22,23 +22,7 @@ async function filterData(month) {
 
   newdata = newdata.filter(d=> {
   return  d.availability["month-array-northern"].includes(month)
-    // console.log(d.availability["month-array-northern"])
   })
-  // console.log("newData.filter", newdata)
-  //   var monthCount = [];
-  //   newdata.forEach(d => {
-  //       d.availability["month-array-northern"].forEach(h => {
-  //           if  (monthCount.hasOwnProperty(h))  {
-  //               monthCount[h]++
-  //           } else {
-  //               monthCount[h] = 1;
-  //           }
-  //       } )
-  //   })
-
-    // console.log("monthCount", monthCount)
-
-    // monthCount.filter((d) => d.monthCount === month);
 
     var hourCount = [];
     newdata.forEach(d => {
@@ -50,13 +34,8 @@ async function filterData(month) {
             }
         } )
     })
-    //console.log('hourCount', hourCount)
 
     return hourCount;
-
-    // var dataCount = [];
-    // newdata.forEach(e => dataCount[e.availability.hourCount] = dataCount[e.availability.hourCount] ? dataCount[e.availability.hourCount] + 1 : 1);
-    // dataCount = Object.keys(dataCount).map(e => {return {key:e, count:dataCount[e]}});
 }
 
 const x = d3.scaleBand()
@@ -80,11 +59,16 @@ function initChart() {
     .attr("transform", `translate(0, ${height})`)
     .call(d3.axisBottom(x))
     .selectAll("text")
+      .style("font-size", 20)
+      .style("fill", "#077C75")
       .attr("transform", "translate(-10,0)rotate(-45)")
       .style("text-anchor", "end");
 
     svg.append("g")
       .attr("id", "yaxis")
+      .selectAll("text")
+      .style("font-size", 20)
+      .style("fill", "#077C75")
       
 }
 
@@ -93,7 +77,7 @@ function drawChart(hourCount) {
   // set the dimensions and margins of the graph
      // Add Y axis
      const y = d3.scaleLinear()
-     .domain([0, d3.max(hourCount)])
+     .domain([0, 50])
      .range([ height, 0]);
 
      d3.select("#yaxis")
@@ -108,7 +92,7 @@ function drawChart(hourCount) {
       .attr("y", (d, i) => y(hourCount[i]))
       .attr("width", x.bandwidth())
       .attr("height", (d, i) =>  height - y(hourCount[i]))
-      .attr("fill", "#69b3a2")
+      .attr("fill", "#72B5B0")
 
 }     
 

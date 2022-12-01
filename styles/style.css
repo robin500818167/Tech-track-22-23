@@ -46,6 +46,18 @@ button{
   transition: 0.5s;
   letter-spacing: 4px;
 }
+#filter {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 50px;
+}
+#filter button {
+  padding: 5px 5px;
+}
+#my_dataviz{
+  display: flex;
+  justify-content: center;
+}
 nav button:nth-child(2){
   color: #87C9A1;
   background-color: #67B892;
@@ -56,15 +68,21 @@ nav button:nth-child(3){
   background-color: #027C75;
   border: 5px solid #76C4BD;
 }
-nav, h1, main {
+nav {
+  margin: 50px;
   display: flex;
   justify-content: space-around;
-  margin: 35px;
 }
 h1 {
+  margin: 50px;
+  text-align: center;
   margin-top: 0;
   font-size: 3em;
 }
 main{
-  flex-direction: column;
+  margin: 50px;
+}
+#yaxis {
+font-size: 20px;
+color: #077C75;
 }
