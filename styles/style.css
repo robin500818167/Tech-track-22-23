@@ -54,6 +54,9 @@ button{
 #filter button {
   padding: 5px 5px;
 }
+#filter button:focus {
+  color: #077C75;
+}
 #my_dataviz{
   display: flex;
   justify-content: center;
