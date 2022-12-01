@@ -1,6 +1,6 @@
 
 const CONFIG = {
-  url: `http://acnhapi.com/v1/`,
+  url: `https://acnhapi.com/v1/`,
 };
 
 export default CONFIG;
