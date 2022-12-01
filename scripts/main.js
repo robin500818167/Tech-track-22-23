@@ -93,7 +93,6 @@ function drawChart(hourCount) {
       .attr("width", x.bandwidth())
       .attr("height", (d, i) =>  height - y(hourCount[i]))
       .attr("fill", "#72B5B0")
-
 }     
 
 window.addEventListener('DOMContentLoaded', (e) => {
